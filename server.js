@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3000;
 
 connectDB();
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
