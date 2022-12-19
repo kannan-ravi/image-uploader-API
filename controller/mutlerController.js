@@ -1,6 +1,8 @@
 // import upload from "../middleware/mutler.js"
 import imageModel from '../model/uploadSchema.js';
 import path from 'path'
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { v4 as uuid } from 'uuid';
 import {fileURLToPath} from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -15,16 +17,28 @@ const getImage = async (req, res) => {
 
 const uploadImage = async (req, res) => {
 
-  console.log(path.join(__dirname, '..', req.file.path))
+  const s3Uploadv3 = async (file) => {
+    const s3client = new S3Client();
+    let keyId = `${uuid()}-${file.originalname}`;
+    const params = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: `uploads/${keyId}`,
+      Body: file.buffer
+    }
 
-  let obj = {
-    filename: req.file.filename,
-    desc: req.file.destination,
-    path: path.join(__dirname, '..', req.file.path)
+    let obj = {
+      filename: keyId,
+      desc: 'uploads',
+      path: `https://aws-s3-devchallenges-image-upload.s3.ap-northeast-1.amazonaws.com/uploads/${keyId}`
+    }
+    
+    const result = await imageModel.create(obj)
+    return s3client.send(new PutObjectCommand(params))
   }
 
-  const result = await imageModel.create(obj)
-  res.status(201).json({result});
+  const result = await s3Uploadv3(req.file);
+
+  res.status(201).json({message: 'Image Uploaded Successfully'});
 }
 
 export default { uploadImage, getImage }

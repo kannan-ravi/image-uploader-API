@@ -1,19 +1,23 @@
 import multer from "multer";
 
 // *|| Mutler diskstorage implementation
-const storage = multer.diskStorage({
+// const storage = multer.diskStorage({
 
   // *|| Destination decides the path to store the file
-  destination: (req, file, cb) => {
-    cb(null, 'uploads')
-  },
+  // destination: (req, file, cb) => {
+    // cb(null, 'uploads')
+  // },
 
   // *|| Filename - we can customize the file name
-  filename: (req, file, cb) => {
-    const { originalname } = file;
-    cb(null, `${Date.now()}-${originalname}`)
-  }
-})
+  // filename: (req, file, cb) => {
+    // const { originalname } = file;
+    // cb(null, `${Date.now()}-${originalname}`)
+  // }
+// })
+
+
+// *|| Mutler memoryStorage implementation
+const storage = multer.memoryStorage();
 
 // *|| Filter the file 
 const fileFilter = (req, file, cb) => {

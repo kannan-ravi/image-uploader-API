@@ -23,6 +23,7 @@ app.use('/upload', router);
 
 app.use(MulterError);
 
+
 mongoose.connection.once('open', () => {
   console.log('Connected to MongoDB');
   app.listen(PORT, () => console.log(`Your server is running on ${PORT}`))
