@@ -1,5 +1,6 @@
 const allowedOrigins = [
-    'https://image-uploader-zv1t.onrender.com'
+    'https://image-uploader-zv1t.onrender.com',
+    'https://image-uploader-zv1t.onrender.com/'
 ];
 
 const corsOptions = {
